@@ -1,0 +1,5 @@
+{
+  "name": "ScaleTicket Pro Studio",
+  "description": "A professional weighing ticket issuance system featuring XML invoice parsing, automated gross weight calculation, capacity validation, and A5 thermal ticket printing.",
+  "requestFramePermissions": []
+}
