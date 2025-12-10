@@ -25,5 +25,6 @@ export interface ParsingResult {
   netWeight: number | null;
   invoiceDate?: string | null;
   extractedPlate?: string | null;
+  filenameDate?: string | null;
   error?: string;
 }

@@ -26,10 +26,10 @@ export const saveTicket = async (ticket: WeighingTicket): Promise<WeighingTicket
         const stored = localStorage.getItem(TICKETS_STORAGE_KEY);
         const currentTickets: WeighingTicket[] = stored ? JSON.parse(stored) : [];
         
+        // Do not overwrite issueTimestamp with Date.now(); use the one passed in the ticket object
         const newTicket = { 
           ...ticket, 
-          id: `TKT-${Date.now().toString().slice(-6)}`, // Auto-generate simple ID
-          issueTimestamp: Date.now() 
+          id: `TKT-${Date.now().toString().slice(-6)}` // Auto-generate simple ID
         };
         
         currentTickets.push(newTicket);

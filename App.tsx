@@ -104,16 +104,23 @@ const App: React.FC = () => {
     setFeedbackMessage(null);
 
     // --- Date & Time Calculation ---
-    // Rule 1: Ticket Date = XML Date + 1 Day
-    // Rule 2: Ticket Time = Random between 07:12:50 and 15:45:50
+    // Rule 1: Use Date from Filename if available (Exact date).
+    // Rule 2: If no filename date, use XML Date + 1 Day.
     
-    let ticketDate = new Date(); // Fallback to now if XML date is missing
+    let ticketDate = new Date(); // Fallback to now if dates are missing
 
-    if (invoiceData.invoiceDate) {
+    if (invoiceData.filenameDate) {
+        const fileDate = new Date(invoiceData.filenameDate);
+        if (!isNaN(fileDate.getTime())) {
+            ticketDate = fileDate;
+            // Add +1 day to filename date as requested
+            ticketDate.setDate(ticketDate.getDate() + 1);
+        }
+    } else if (invoiceData.invoiceDate) {
       const xmlDate = new Date(invoiceData.invoiceDate);
       if (!isNaN(xmlDate.getTime())) {
         ticketDate = xmlDate;
-        // Add 1 day to the document date
+        // Add 1 day to the document date if derived from XML content
         ticketDate.setDate(ticketDate.getDate() + 1);
       }
     }
@@ -295,6 +302,13 @@ const App: React.FC = () => {
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-500">Placa Detectada (XML)</span>
                     <span className="font-mono font-bold text-slate-800">{invoiceData.extractedPlate}</span>
+                  </div>
+                )}
+                {/* Visual confirmation of filename date */}
+                {invoiceData.filenameDate && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">Data Detectada (Nome do Arquivo)</span>
+                    <span className="font-mono font-bold text-green-700">{new Date(invoiceData.filenameDate).toLocaleDateString()}</span>
                   </div>
                 )}
                 {/* Visual confirmation of auto-selected truck */}
